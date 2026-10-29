@@ -131,6 +131,7 @@ inline int altss_set(altss_t tss_id, void *val)
 #include <errno.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <sched.h>
 
 
 typedef pthread_t althrd_t;
@@ -153,10 +154,12 @@ inline int althrd_equal(althrd_t thr0, althrd_t thr1)
     return pthread_equal(thr0, thr1);
 }
 
+#ifndef __scarlet__
 inline void althrd_exit(int res)
 {
     pthread_exit((void*)(intptr_t)res);
 }
+#endif
 
 inline void althrd_yield(void)
 {

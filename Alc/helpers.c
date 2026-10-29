@@ -218,6 +218,10 @@ void FillCPUCaps(int capfilter)
 #endif
 #endif
 #ifdef HAVE_NEON
+#if defined(__scarlet__) && defined(__aarch64__) && defined(__ARM_NEON)
+    /* AdvSIMD is part of Scarlet's native AArch64 compilation baseline. */
+    caps |= CPU_CAP_NEON;
+#else
     FILE *file = fopen("/proc/cpuinfo", "rt");
     if(!file)
         ERR("Failed to open /proc/cpuinfo, cannot check for NEON support\n");
@@ -262,6 +266,7 @@ void FillCPUCaps(int capfilter)
 
         alstr_reset(&features);
     }
+#endif
 #endif
 
     TRACE("Extensions:%s%s%s%s%s%s\n",

@@ -20,7 +20,9 @@
 
 #include "config.h"
 
+#ifndef __scarlet__
 #include <signal.h>
+#endif
 #include <stdarg.h>
 
 #ifdef HAVE_WINDOWS_H
@@ -66,6 +68,8 @@ void alSetError(ALCcontext *context, ALenum errorCode, const char *msg, ...)
         /* DebugBreak will cause an exception if there is no debugger */
         if(IsDebuggerPresent())
             DebugBreak();
+#elif defined(__scarlet__)
+        __builtin_debugtrap();
 #elif defined(SIGTRAP)
         raise(SIGTRAP);
 #endif
@@ -99,6 +103,8 @@ AL_API ALenum AL_APIENTRY alGetError(void)
 #ifdef _WIN32
             if(IsDebuggerPresent())
                 DebugBreak();
+#elif defined(__scarlet__)
+            __builtin_debugtrap();
 #elif defined(SIGTRAP)
             raise(SIGTRAP);
 #endif

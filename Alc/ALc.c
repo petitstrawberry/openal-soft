@@ -27,7 +27,9 @@
 #include <stdio.h>
 #include <memory.h>
 #include <ctype.h>
+#ifndef __scarlet__
 #include <signal.h>
+#endif
 
 #include "alMain.h"
 #include "alSource.h"
@@ -1623,6 +1625,8 @@ static void alcSetError(ALCdevice *device, ALCenum errorCode)
         /* DebugBreak() will cause an exception if there is no debugger */
         if(IsDebuggerPresent())
             DebugBreak();
+#elif defined(__scarlet__)
+        __builtin_debugtrap();
 #elif defined(SIGTRAP)
         raise(SIGTRAP);
 #endif

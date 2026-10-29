@@ -31,7 +31,9 @@
 
 extern inline althrd_t althrd_current(void);
 extern inline int althrd_equal(althrd_t thr0, althrd_t thr1);
+#ifndef __scarlet__
 extern inline void althrd_exit(int res);
+#endif
 extern inline void althrd_yield(void);
 
 extern inline int almtx_lock(almtx_t *mtx);
